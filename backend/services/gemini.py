@@ -15,7 +15,7 @@ async def generate_playlist_suggestions(data):
         - Ritmo: {data.rhythm}
         - Nível de novidade das músicas: {data.novelty}
         - Idiomas desejados: {data.languages}
-        - Tema adicional (opcional): {data.obs}
+        - Informações adicionais quanto à playlist (opcional): {data.obs}
 
         Instruções:
         - Escolha músicas que combinem fortemente com essas características.
