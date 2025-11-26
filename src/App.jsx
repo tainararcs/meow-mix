@@ -12,6 +12,13 @@ export default function App() {
     formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }) 
   }
 
+  // Dados dinâmicos para as estatísticas
+  const statsData = [
+    { value: , label: Playlists Criadas },
+    { value: 28, label: Gêneros Musicais },
+    { value: 100%, label: Personalizado }
+  ]
+    
   return (
     <>
       {/* Seção de introdução */}
@@ -57,24 +64,25 @@ export default function App() {
             </svg>
           </button>
 
+          { /* Seção de estatísticas */ }
           <div className='intro-stats'>
             <div className='stat'>
-              <div className='stat-number'>10K+</div>
+              <div className='stat-number'>staticData.number</div>
               <div className='stat-label'>Playlists Criadas</div>
             </div>
 
             <div className='stat-divider'></div>
 
             <div className='stat'>
-              <div className='stat-number'>50+</div>
-              <div className='stat-label'>Gêneros Musicais</div>
+              <div className='stat-number'>taticData.number</div>
+              <div className='stat-label'>staticData.label</div>
             </div>
 
             <div className='stat-divider'></div>
 
             <div className='stat'>
-              <div className='stat-number'>100%</div>
-              <div className='stat-label'>Personalizado</div>
+              <div className='stat-number'>taticData.number</div>
+              <div className='stat-label'>statiData.label.</div>
             </div>
           </div>
         </div>
