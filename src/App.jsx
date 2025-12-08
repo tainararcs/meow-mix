@@ -1,4 +1,4 @@
-import { useRef } from 'react'        // Referencia elementos DOM.
+import { useRef, useState } from 'react'  // Referencia elementos DOM.
 import Form from './components/Form'
 
 // Declaração do componente funcional App e o exporta como default do módulo.
@@ -6,19 +6,22 @@ export default function App() {
   // Cria a referência formRef. 
   const formRef = useRef(null)
 
-  // Função chamada quando o usuário clica no botão (onClick).
+  // Estado para a contagem de playlist criadas.
+  const [playlistCount, setPlaylistCount] = useState(0)
+
+  // Implementa a rolagem para exibir o formulário.
   const scrollToForm = () => {
     // Se formRef.current for null ou undefined, a expressão pára e retorna undefined sem lançar erro (?). Faz uma rolagem suave e alinha a borda superior do elemento no topo.
     formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }) 
   }
 
-  // Dados dinâmicos para as estatísticas
+  // Dados dinâmicos para as estatísticas.
   const statsData = [
-    { value: , label: Playlists Criadas },
-    { value: 28, label: Gêneros Musicais },
-    { value: 100%, label: Personalizado }
+    { label: 'Playlists Criadas' },
+    { number: '28', label: 'Gêneros Musicais' },
+    { number: '100%', label: 'Personalizado' }
   ]
-    
+
   return (
     <>
       {/* Seção de introdução */}
@@ -64,25 +67,24 @@ export default function App() {
             </svg>
           </button>
 
-          { /* Seção de estatísticas */ }
           <div className='intro-stats'>
             <div className='stat'>
-              <div className='stat-number'>staticData.number</div>
-              <div className='stat-label'>Playlists Criadas</div>
+              <div className='stat-number'>{playlistCount}</div>
+              <div className='stat-label'>{statsData[0].label}</div>
             </div>
 
             <div className='stat-divider'></div>
 
             <div className='stat'>
-              <div className='stat-number'>taticData.number</div>
-              <div className='stat-label'>staticData.label</div>
+              <div className='stat-number'>{statsData[1].number}</div>
+              <div className='stat-label'>{statsData[1].label}</div>
             </div>
 
             <div className='stat-divider'></div>
 
             <div className='stat'>
-              <div className='stat-number'>taticData.number</div>
-              <div className='stat-label'>statiData.label.</div>
+              <div className='stat-number'>{statsData[2].number}</div>
+              <div className='stat-label'>{statsData[2].label}</div>
             </div>
           </div>
         </div>
@@ -100,7 +102,7 @@ export default function App() {
           <h2 className='section-title'><i className='bi bi-music-note-list'></i> Configure Sua Playlist</h2>
           <p className='section-subtitle'>Responda algumas perguntas e deixe a magia acontecer</p>
         </div>
-        <Form/>
+        <Form setPlaylistCount = {() => setPlaylistCount(prev => prev + 1)} />
       </main>
 
       {/* Rodapé */}

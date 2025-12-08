@@ -90,7 +90,7 @@ const languageItems = [
   { value: 'mix', label: 'Mix' }
 ]
 
-export default function Form() {
+export default function Form({ setPlaylistCount }) {
   // Estado para o link recebido da playlist.
   const [playlistUrl, setPlaylistUrl] = useState(null);
 
@@ -106,33 +106,36 @@ export default function Form() {
   const [obs, setObs] = useState('');
 
 
-  // Login no spotify.
+  /* Login automático quando volta do Spotify.
+     Captura o access_token quando o Spotify redireciona de volta.
+     Salva no localStorage para que o usuário mão precise logar de novamente.
+  */
   useEffect(() => {
     const params = new URLSearchParams(window.location.search); // Acessa parâmetros da URL.
 
-    const access = params.get("access_token");
-    const refresh = params.get("refresh_token");
+    const access_token_url = params.get("access_token");
+    const refresh_token_url = params.get("refresh_token");
 
-    if (access && refresh) {
-      localStorage.setItem('access_token', access);
-      localStorage.setItem('refresh_token', refresh);
+    if (access_token_url && refresh_token_url) {
+      localStorage.setItem('access_token', access_token_url);
+      localStorage.setItem('refresh_token', refresh_token_url);
 
       // Limpa a URL (remove ?token=...) para não expor token na URL.
-      window.history.replaceState({}, '', '/');
+      // window.history.replaceState({}, '', '/');
     }
   }, []); // '[]' faz esse efeito rodar apenas uma vez.
 
 
-  // Envio do formulário após login.
+  /* Verifica se o usuário já está logado.
+     Se não estiver, manda para o login.
+   */
   const handleSubmit = async (e) => {
     // Evita reload do formulário.
     e.preventDefault();
 
     // Verifica o token (verifica se o usuário está logado).
-    const access = localStorage.getItem('access_token');
-    const refresh = localStorage.getItem("refresh_token");
-    if (!access) {
-      // Não logado, então inicia login.
+    const access_token = localStorage.getItem('access_token')
+    if (!access_token) { // Não logado, então inicia login.
       const result = await fetch('http://127.0.0.1:8000/login');
       const data = await result.json();
       window.location.href = data.url; // Redireciona para a página de login.
@@ -155,7 +158,7 @@ export default function Form() {
     }
 
     // Monta o payload.
-    const payload = { mood, time: timeOfDay, goal, genres, rhythm, languages, limit, novelty, obs, access, refresh, };
+    const payload = { mood, timeOfDay, goal, genres, rhythm, languages, limit, novelty, obs, access_token, refresh_token: localStorage.getItem('refresh_token'), };
 
     // Envio pro backend.
     try {
@@ -171,12 +174,15 @@ export default function Form() {
       }
 
       const data = await result.json();
-      console.log('Resposta backend:', data);
-      setPlaylistUrl(data.playlist_url);
-
+      if (data.playlist_url) {
+        setPlaylistUrl(data.playlist_url);
+        setPlaylistCount(data.playlist_count);
+      }
     } catch (err) {
       console.error('Erro ao enviar ao backend:', err);
     }
+
+    localStorage.clear();
   };
 
   return (
@@ -216,7 +222,7 @@ export default function Form() {
       
       {playlistUrl && (
         <div className="playlist-result">
-          <center><i class="bi bi-spotify"></i></center><p>Sua playlist está pronta!</p><br/>
+          <center><i className="bi bi-spotify"></i></center><p>Sua playlist está pronta!</p><br/>
           <a href={playlistUrl} target="_blank" rel="noopener noreferrer">Abrir playlist no Spotify</a>
         </div>
       )}

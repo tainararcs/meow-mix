@@ -39,7 +39,8 @@ h1 {
   font-weight: 800;
   text-align: center;
   margin-bottom: 0.5rem;
-  background: linear-gradient(135deg, var(--primary), var(--primary-light), var(--secondary));
+  /* Cobre o conteúdo do título */
+  background: linear-gradient(135deg, var(--primary), var(--primary-light), var(--secondary)); 
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -650,6 +651,12 @@ button[type="submit"]:hover {
   button[type="submit"] {
     font-size: 1rem;
   }
+}
+
+button[type="submit"]:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.4);
+  filter: brightness(0.95);
 }
 
 /* Scrollbar personalizada */
