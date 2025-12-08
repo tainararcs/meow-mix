@@ -1,0 +1,6 @@
+fastapi
+uvicorn # FastAPI
+requests
+pydantic # Payload
+google-generativeai
+# npm install

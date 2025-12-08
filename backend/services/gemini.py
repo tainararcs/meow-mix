@@ -4,12 +4,12 @@ import json
 genai.configure(api_key='')
 
 async def generate_playlist_suggestions(data):
-    prompt = f"""
+    prompt = f'''
         Você é um especialista em curadoria musical. Sua tarefa é montar playlists altamente personalizadas com base nas preferências do usuário.
 
         Objetivo: Selecione exatamente {data.limit} músicas que combinem com os seguintes critérios:
         - Humor desejado: {data.mood}
-        - Horário do dia: {data.time}
+        - Horário do dia: {data.timeOfDay}
         - Objetivo do momento: {data.goal}
         - Gêneros preferidos: {data.genres}
         - Ritmo: {data.rhythm}
@@ -26,7 +26,7 @@ async def generate_playlist_suggestions(data):
         Resposta obrigatória: Retorne apenas um JSON válido, seguindo exatamente este formato:
         [
         {{
-            "name_playlist": "nome da playlist",
+            "playlist_name": "nome da playlist",
             "tracks": [
                 {{
                     "title": "Nome da música",
@@ -45,14 +45,14 @@ async def generate_playlist_suggestions(data):
         ]
 
         NÃO inclua explicações fora do JSON, nem textos adicionais, nem markdown.
-    """
+    '''
 
-    model = genai.GenerativeModel('gemini-2.0-flash')
-    result = model.generate_content(prompt, generation_config={"response_mime_type": "application/json"})
+    model = genai.GenerativeModel('gemini-2.5-flash')
+    result = model.generate_content(prompt, generation_config={'response_mime_type': 'application/json'})
 
     try:
         return json.loads(result.text)
     except json.JSONDecodeError:
-        print("\nGemini retornou JSON inválido:")
+        print('\nGemini retornou JSON inválido:')
         print(result)
         raise
