@@ -719,3 +719,13 @@ button[type="submit"]:active {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+.loading-spinner {
+  font-size: 50px;  /* Tamanho do ícone */
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
