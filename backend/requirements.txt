@@ -1,6 +1,6 @@
 fastapi
-uvicorn # FastAPI
+uvicorn  # FastAPI
 requests
 pydantic # Payload
 google-generativeai
-# npm install
+python-dotenv
