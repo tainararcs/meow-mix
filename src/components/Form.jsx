@@ -120,6 +120,9 @@ export default function Form({ setPlaylistCreated }) {
   // Estado para o link recebido da playlist.
   const [playlistUrl, setPlaylistUrl] = useState(null);
 
+  // Estado para controlar o carregamento.
+  const [isLoading, setIsLoading] = useState(false);
+  
   // Estados (um state por grupo). useState([]) inicializa com array vazio.
   const [mood, setMood] = useState([]);                 
   const [timeOfDay, setTimeOfDay] = useState([]);
@@ -186,6 +189,9 @@ export default function Form({ setPlaylistCreated }) {
     // Esconde a div de resultados (definindo o URL da playlist como null).
     setPlaylistUrl(null);
     
+    // Inicia o carregamento
+    setIsLoadin(true);
+    
     // Envio pro backend.
     try {
       // Cria Playlists e adiciona músicas.
@@ -202,10 +208,15 @@ export default function Form({ setPlaylistCreated }) {
       if (data.playlist_url) {
         setPlaylistUrl(data.playlist_url);
         setPlaylistCreated();
+        
       }
     } catch (err) {
       console.error('Erro ao enviar ao backend:', err);
+    } finally {
+      // Finaliza o carregamento, independentemente do sucesso ou erro
+      setIsLoading(false);
     }
+    
   };
 
   return (
@@ -243,17 +254,20 @@ export default function Form({ setPlaylistCreated }) {
         </div>
       </form>
       
-      {playlistUrl && (
-        <div key={playlistUrl} className="playlist-result">
-          <center><i className="bi bi-spotify"></i></center><p>Sua playlist está pronta!</p><br/>
-          <a href={playlistUrl} target="_blank" rel="noopener noreferrer">Abrir playlist no Spotify</a>
-        </div>
-      )}
-
-      { playlistUrl && (
+      {{/* Exibe o carregamento enquanto isLoading for verdadeiro */}
+      {isLoading && (
         <div className="loading-container">
           <i className="bi bi-arrow-clockwise loading-spinner"></i>
           <p>Gerando sua playlist...</p>
+        </div>
+      )}
+
+      {/* Exibe o link da playlist assim que estiver disponível */}
+      {playlistUrl && (
+        <div key={playlistUrl} className="playlist-result">
+          <center><i className="bi bi-spotify"></i></center>
+          <p>Sua playlist está pronta!</p><br/>
+          <a href={playlistUrl} target="_blank" rel="noopener noreferrer">Abrir playlist no Spotify</a>
         </div>
       )}
     </>
