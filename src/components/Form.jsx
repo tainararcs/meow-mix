@@ -249,6 +249,13 @@ export default function Form({ setPlaylistCreated }) {
           <a href={playlistUrl} target="_blank" rel="noopener noreferrer">Abrir playlist no Spotify</a>
         </div>
       )}
+
+      { !playlistUrl && (
+        <div className="loading-container">
+          <i className="bi bi-arrow-clockwise loading-spinner"></i>
+          <p>Gerando sua playlist...</p>
+        </div>
+      )}
     </>
   );
 }
