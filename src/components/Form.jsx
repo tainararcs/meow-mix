@@ -110,7 +110,7 @@ function errorsValidation(mood, timeOfDay, goal, genres, rhythm, language, novel
 }
 
 async function login() {
-  const result = await fetch('http://127.0.0.1:8000/login');
+  const result = await fetch('https://meow-mix.onrender.com/login');
   const data = await result.json();
   window.location.href = data.url; // Redireciona para a página de login.
   return;
