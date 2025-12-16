@@ -175,6 +175,12 @@ export default function Form({ setPlaylistCreated }) {
     // Monta o payload (dados de API).
     const payload = { mood, timeOfDay, goal, genres, rhythm, language, limit, novelty, obs, access_token, refresh_token: localStorage.getItem('refresh_token'), };
 
+    // Esconde a div de resultados (definindo o URL da playlist como null).
+    setPlaylistUrl(null);
+    
+    // Inicia o carregamento.
+    setIsLoading(true);
+
     // Limpa os campos do formulário (resetando os estados).
     setMood([]);
     setTimeOfDay([]);
@@ -185,12 +191,6 @@ export default function Form({ setPlaylistCreated }) {
     setLimit(20);  // Valor padrão da quantidade de músicas.
     setNovelty([]);
     setObs('');
-
-    // Esconde a div de resultados (definindo o URL da playlist como null).
-    setPlaylistUrl(null);
-    
-    // Inicia o carregamento
-    setIsLoading(true);
     
     // Envio pro backend.
     try {
@@ -213,7 +213,7 @@ export default function Form({ setPlaylistCreated }) {
     } catch (err) {
       console.error('Erro ao enviar ao backend:', err);
     } finally {
-      // Finaliza o carregamento, independentemente do sucesso ou erro
+      // Finaliza o carregamento, independentemente do sucesso ou erro.
       setIsLoading(false);
     }
     

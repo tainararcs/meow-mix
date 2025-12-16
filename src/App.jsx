@@ -118,7 +118,7 @@ export default function App() {
       {/* Rodapé */}
       <footer className='footer'>
         <div className='container'>
-          <p>Feito com 💚 por MeowMix © 2024</p>
+          <p>Feito com 💚 por MeowMix © 2025</p>
         </div>
       </footer>
     </>
