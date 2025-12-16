@@ -207,14 +207,12 @@ export default function Form({ setPlaylistCreated }) {
 
       if (data.playlist_url) {
         setPlaylistUrl(data.playlist_url);
+        // Finaliza o carregamento, independentemente do sucesso ou erro.
+        setIsLoading(false);
         setPlaylistCreated();
-        
       }
     } catch (err) {
       console.error('Erro ao enviar ao backend:', err);
-    } finally {
-      // Finaliza o carregamento, independentemente do sucesso ou erro.
-      setIsLoading(false);
     }
     
   };
