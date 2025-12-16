@@ -6,13 +6,16 @@ from fastapi.responses import RedirectResponse      # Requerido pelo callback
 from pydantic import BaseModel                      # Requerido por class PlaylistRequest
 import urllib.parse                                 # Requerido para os parâmetros do login
 import requests
+import os
 
 
 app = FastAPI()
 app.add_middleware( CORSMiddleware, allow_origins=['*'], allow_credentials=True, allow_methods=['*'], allow_headers=['*'], )
 
 # URL de callback chamada pelo Spotify após o login do usuário
-REDIRECT_URI = 'http://127.0.0.1:8000/callback'
+REDIRECT_URI = os.getenv("REDIRECT_URI")
+FRONTEND_URL = os.getenv("FRONTEND_URL")
+
 
 class PlaylistRequest(BaseModel):
     '''
@@ -131,11 +134,11 @@ def spotify_callback(code: str) -> RedirectResponse:
 
     if 'error' in tokens:
         print('\nErro ao obter tokens:', tokens)
-        return RedirectResponse(url='http://localhost:5173/?error=auth_failed')
+        return RedirectResponse(url=f'{FRONTEND_URL}/?error=auth_failed')
     
     access_token = tokens['access_token']
     refresh_token = tokens['refresh_token']
 
     # Redireciona ao frontend com os tokens.
-    redirect_url = f'http://localhost:5173/?access_token={access_token}&refresh_token={refresh_token}'
+    redirect_url = f'{FRONTEND_URL}/?access_token={access_token}&refresh_token={refresh_token}'
     return RedirectResponse(redirect_url)
