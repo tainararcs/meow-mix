@@ -250,7 +250,7 @@ export default function Form({ setPlaylistCreated }) {
         </div>
       )}
 
-      { !playlistUrl && (
+      { playlistUrl && (
         <div className="loading-container">
           <i className="bi bi-arrow-clockwise loading-spinner"></i>
           <p>Gerando sua playlist...</p>
