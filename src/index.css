@@ -722,7 +722,7 @@ button[type="submit"]:active {
 
 /* Loading container */
 .loading-container {
-  padding: 2rem;
+  padding: 1.8rem;
   animation: fadeIn 0.4s ease;
   display: flex;
   flex-direction: column;

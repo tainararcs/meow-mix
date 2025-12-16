@@ -51,7 +51,7 @@ export default function App() {
 
           <p className='intro-subtitle'>A playlist perfeita para cada momento da sua vida</p>
 
-          <p className='intro-description'>Combine seu humor, horário e estilo musical e descubra uma playlist única com a companhia de um gatinho surpresa!</p>
+          <p className='intro-description'>Combine seu humor, horário e estilo musical e descubra uma playlist única no seu spotify com a companhia de um gatinho surpresa!</p>
 
           <div className='intro-features'>
             <div className='feature-item'>
