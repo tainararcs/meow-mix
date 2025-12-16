@@ -1,21 +1,20 @@
-// useState cria estados locais reativos. 
-// useEffect executa efeitos colaterais (leitura da query string para pegar token no login).
 import { useState, useEffect } from 'react';  
 import ChipGroup from './ChipGroup';
 
-// Arrays de objetos {value, label} usados para popular ChipGroup.
+// Arrays de objetos usados para popular ChipGroup.
 const moodItems = [
   { value: 'alegre', label: 'Alegre' },
   { value: 'animado', label: 'Animado' },
-  { value: 'calmo', label: 'Calmo' },
-  { value: 'melancolico', label: 'Melancólico' },
-  { value: 'romantico', label: 'Romântico' },
-  { value: 'inspirado', label: 'Inspirado' },
-  { value: 'concentrado', label: 'Concentrado' },
-  { value: 'preguicoso', label: 'Preguiçoso' },
   { value: 'ansioso', label: 'Ansioso' },
-  { value: 'raiva', label: 'Raiva' },
+  { value: 'calmo', label: 'Calmo' },
+  { value: 'concentrado', label: 'Concentrado' },
+  { value: 'descontraido', label: 'Descontraído' },
   { value: 'frustracao', label: 'Frustração' },
+  { value: 'melancolico', label: 'Melancólico' },
+  { value: 'inspirado', label: 'Inspirado' },
+  { value: 'preguicoso', label: 'Preguiçoso' },
+  { value: 'raiva', label: 'Raiva' },
+  { value: 'romantico', label: 'Romântico' },
 ];
 
 const timeItems = [
@@ -90,28 +89,54 @@ const languageItems = [
   { value: 'mix', label: 'Mix' }
 ]
 
-export default function Form({ setPlaylistCount }) {
+function errorsValidation(mood, timeOfDay, goal, genres, rhythm, language, novelty, limit) {
+  // Validações básicas.
+  const errors = [];
+  if (mood.length === 0) errors.push('Escolha um humor');
+  if (timeOfDay.length === 0) errors.push('Escolha o horário do dia');
+  if (goal.length === 0) errors.push('Escolha uma finalidade para a playlist');
+  if (genres.length === 0) errors.push('Escolha pelo menos 1 gênero');
+  if (rhythm.length === 0) errors.push('Escolha um ritmo');
+  if (language.length === 0) errors.push('Escolha um idioma');
+  if (novelty.length === 0) errors.push('Escolha o tipo de novidade');
+  if (!limit || limit < 5 || limit > 200) errors.push('Quantidade de músicas inválida (5–200)');
+
+  if (errors.length) {
+    alert(errors.join('\n'));
+    return false;
+  }
+
+  return true;
+}
+
+async function login() {
+  const result = await fetch('http://127.0.0.1:8000/login');
+  const data = await result.json();
+  window.location.href = data.url; // Redireciona para a página de login.
+  return;
+}
+
+export default function Form({ setPlaylistCreated }) {
   // Estado para o link recebido da playlist.
   const [playlistUrl, setPlaylistUrl] = useState(null);
 
   // Estados (um state por grupo). useState([]) inicializa com array vazio.
-  const [mood, setMood] = useState([]);                 // Seleção múltipla.
+  const [mood, setMood] = useState([]);                 
   const [timeOfDay, setTimeOfDay] = useState([]);
-  const [goal, setGoal] = useState([]);                 
+  const [goal, setGoal] = useState([]);             
   const [genres, setGenres] = useState([]);
   const [rhythm, setRhythm] = useState([]);
-  const [languages, setLanguages] = useState([]);       // Seleção múltipla.
+  const [language, setLanguage] = useState([]);       
   const [limit, setLimit] = useState(20);
   const [novelty, setNovelty] = useState([]);
   const [obs, setObs] = useState('');
 
-
-  /* Login automático quando volta do Spotify.
-     Captura o access_token quando o Spotify redireciona de volta.
+  /* Captura o access_token quando o Spotify redireciona de volta (callback).
      Salva no localStorage para que o usuário mão precise logar de novamente.
   */
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search); // Acessa parâmetros da URL.
+  useEffect(() => { 
+    // Acessa parâmetros da URL.
+    const params = new URLSearchParams(window.location.search); 
 
     const access_token_url = params.get("access_token");
     const refresh_token_url = params.get("refresh_token");
@@ -120,10 +145,10 @@ export default function Form({ setPlaylistCount }) {
       localStorage.setItem('access_token', access_token_url);
       localStorage.setItem('refresh_token', refresh_token_url);
 
-      // Limpa a URL (remove ?token=...) para não expor token na URL.
-      // window.history.replaceState({}, '', '/');
+      // Limpa a URL para não expor os tokens.
+      window.history.replaceState({}, '', '/');
     }
-  }, []); // '[]' faz esse efeito rodar apenas uma vez.
+  }, []); // Garante que esse efeito execute uma única vez.
 
 
   /* Verifica se o usuário já está logado.
@@ -132,33 +157,20 @@ export default function Form({ setPlaylistCount }) {
   const handleSubmit = async (e) => {
     // Evita reload do formulário.
     e.preventDefault();
+    
+    if (!errorsValidation(mood, timeOfDay, goal, genres, rhythm, language, novelty, limit)) return;
 
     // Verifica o token (verifica se o usuário está logado).
     const access_token = localStorage.getItem('access_token')
-    if (!access_token) { // Não logado, então inicia login.
-      const result = await fetch('http://127.0.0.1:8000/login');
-      const data = await result.json();
-      window.location.href = data.url; // Redireciona para a página de login.
-      return;
+
+    // Não logado, então inicia login.
+    if (!access_token) {
+      await login();
+      return; 
     }
-
-    // Validações básicas.
-    const errors = [];
-    if (mood.length === 0) errors.push('Escolha um humor');
-    if (timeOfDay.length === 0) errors.push('Escolha o horário do dia');
-    if (goal.length === 0) errors.push('Escolha um objetivo para a playlist');
-    if (genres.length === 0) errors.push('Escolha pelo menos 1 gênero');
-    if (rhythm.length === 0) errors.push('Escolha um ritmo');
-    if (novelty.length === 0) errors.push('Escolha o tipo de novidade');
-    if (!limit || limit < 5 || limit > 200) errors.push('Quantidade de músicas inválida (5–200)');
-
-    if (errors.length) {
-      alert(errors.join('\n'));
-      return;
-    }
-
-    // Monta o payload.
-    const payload = { mood, timeOfDay, goal, genres, rhythm, languages, limit, novelty, obs, access_token, refresh_token: localStorage.getItem('refresh_token'), };
+    
+    // Monta o payload (dados de API).
+    const payload = { mood, timeOfDay, goal, genres, rhythm, language, limit, novelty, obs, access_token, refresh_token: localStorage.getItem('refresh_token'), };
 
     // Envio pro backend.
     try {
@@ -168,28 +180,28 @@ export default function Form({ setPlaylistCount }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload), // Transforma en json.
       });
-
       if (!result.ok) {
         throw new Error(`Erro do servidor: ${result.status}`);
       }
-
       const data = await result.json();
+
       if (data.playlist_url) {
         setPlaylistUrl(data.playlist_url);
-        setPlaylistCount(data.playlist_count);
+        setPlaylistCreated();
       }
     } catch (err) {
       console.error('Erro ao enviar ao backend:', err);
     }
 
-    localStorage.clear();
+    // localStorage.removeItem('access_token');
+    // localStorage.removeItem('refresh_token');
   };
 
   return (
     <>
       <form className='card' onSubmit={handleSubmit}>
         <h3><i className='bi bi-music-note'></i>Humor desejado</h3>
-        <ChipGroup items={moodItems} selected={mood} setSelected={setMood}/>
+        <ChipGroup items={moodItems} selected={mood} setSelected={setMood}/> 
 
         <h3><i className='bi bi-music-note'></i>Horário do dia</h3>
         <ChipGroup items={timeItems} selected={timeOfDay} setSelected={setTimeOfDay} single={true}/>
@@ -204,7 +216,7 @@ export default function Form({ setPlaylistCount }) {
         <ChipGroup items={rhythmItems} selected={rhythm} setSelected={setRhythm} single={true}/>
 
         <h3><i className='bi bi-music-note'></i>Idioma</h3>
-        <ChipGroup items={languageItems} selected={languages} setSelected={setLanguages}/>
+        <ChipGroup items={languageItems} selected={language} setSelected={setLanguage}/>
 
         <h3><i className='bi bi-music-note'></i>Quantidade de músicas</h3>
         <input type='number' value={limit} onChange={(e) => setLimit(Number(e.target.value))} min='5' max='200'/>
@@ -221,7 +233,7 @@ export default function Form({ setPlaylistCount }) {
       </form>
       
       {playlistUrl && (
-        <div className="playlist-result">
+        <div key={playlistUrl} className="playlist-result">
           <center><i className="bi bi-spotify"></i></center><p>Sua playlist está pronta!</p><br/>
           <a href={playlistUrl} target="_blank" rel="noopener noreferrer">Abrir playlist no Spotify</a>
         </div>

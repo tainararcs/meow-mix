@@ -592,14 +592,12 @@ button[type="submit"]:hover {
   }
 
   .intro-stats {
-    flex-direction: column;
     gap: 2rem;
   }
 
   .stat-divider {
-    width: 50px;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    width: 1.2px;
+    height: 45px;
   }
 
   .btn-playlist {
@@ -693,13 +691,13 @@ button[type="submit"]:active {
   background: var(--bg-card);
   border: none;
   text-align: center;
-  animation: fadeInUp 0.6s ease;
+  animation: popResult 0.6s ease forwards;
 }
 
 .playlist-result p {
   color: var(--text-light);
   font-size: 1.1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .playlist-result a {
@@ -715,4 +713,9 @@ button[type="submit"]:active {
 
 .playlist-result a:hover {
   transform: translateY(-3px);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }

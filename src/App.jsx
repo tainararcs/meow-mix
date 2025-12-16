@@ -1,20 +1,30 @@
 import { useRef, useState } from 'react'  // Referencia elementos DOM.
 import Form from './components/Form'
 
-// Declaração do componente funcional App e o exporta como default do módulo.
 export default function App() {
-  // Cria a referência formRef. 
+  // Cria uma referência referência para o formulário para rolagem da página. 
   const formRef = useRef(null)
-
-  // Estado para a contagem de playlist criadas.
-  const [playlistCount, setPlaylistCount] = useState(0)
 
   // Implementa a rolagem para exibir o formulário.
   const scrollToForm = () => {
-    // Se formRef.current for null ou undefined, a expressão pára e retorna undefined sem lançar erro (?). Faz uma rolagem suave e alinha a borda superior do elemento no topo.
     formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }) 
   }
+  
+  // Estado para a contagem de playlist criadas. Inicializa o contador com o valor do localStorage.
+  const [playlistCreated, setPlaylistCreated] = useState(() => { 
+    const created = localStorage.getItem('playlistsCreated')
+    return created ? Number(created) : 0 // Converte o valor.
+  })
 
+  // Incrementa o contador de playlists criadas.
+  const handlePlaylistCreated = () => {
+    setPlaylistCreated(prev => {
+      const count = prev + 1
+      localStorage.setItem('playlistsCreated', count)
+      return count
+    })
+  }
+  
   // Dados dinâmicos para as estatísticas.
   const statsData = [
     { label: 'Playlists Criadas' },
@@ -41,7 +51,7 @@ export default function App() {
 
           <p className='intro-subtitle'>A playlist perfeita para cada momento da sua vida</p>
 
-          <p className='intro-description'>Combine seu humor, horário e estilo musical para criar uma experiência sonora única e personalizada junto com um gatinho aleatório</p>
+          <p className='intro-description'>Combine seu humor, horário e estilo musical e descubra uma playlist única com a companhia de um gatinho surpresa!</p>
 
           <div className='intro-features'>
             <div className='feature-item'>
@@ -69,7 +79,7 @@ export default function App() {
 
           <div className='intro-stats'>
             <div className='stat'>
-              <div className='stat-number'>{playlistCount}</div>
+              <div className='stat-number'>{playlistCreated}</div>
               <div className='stat-label'>{statsData[0].label}</div>
             </div>
 
@@ -102,7 +112,7 @@ export default function App() {
           <h2 className='section-title'><i className='bi bi-music-note-list'></i> Configure Sua Playlist</h2>
           <p className='section-subtitle'>Responda algumas perguntas e deixe a magia acontecer</p>
         </div>
-        <Form setPlaylistCount = {() => setPlaylistCount(prev => prev + 1)} />
+        <Form setPlaylistCreated={handlePlaylistCreated}/>
       </main>
 
       {/* Rodapé */}
