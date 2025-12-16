@@ -175,7 +175,7 @@ export default function Form({ setPlaylistCreated }) {
     // Envio pro backend.
     try {
       // Cria Playlists e adiciona músicas.
-      const result = await fetch('http://localhost:8000/generate', {
+      const result = await fetch('https://meow-mix.onrender.com/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload), // Transforma en json.
