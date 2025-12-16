@@ -190,7 +190,7 @@ export default function Form({ setPlaylistCreated }) {
     setPlaylistUrl(null);
     
     // Inicia o carregamento
-    setIsLoadin(true);
+    setIsLoading(true);
     
     // Envio pro backend.
     try {
@@ -254,7 +254,7 @@ export default function Form({ setPlaylistCreated }) {
         </div>
       </form>
       
-      {{/* Exibe o carregamento enquanto isLoading for verdadeiro */}
+      {/* Loading só aparece enquanto isLoading === true */}
       {isLoading && (
         <div className="loading-container">
           <i className="bi bi-arrow-clockwise loading-spinner"></i>
