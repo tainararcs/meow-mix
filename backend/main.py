@@ -35,6 +35,11 @@ class PlaylistRequest(BaseModel):
 
 # Frontend -> /login -> Spotify -> /callback -> volta para Frontend -> chama /generate
 
+@app.get("/")
+def health_check():
+    return {"status": "ok"}
+
+
 @app.post('/generate')
 async def generate_playlist(payload: PlaylistRequest) -> dict:
     '''

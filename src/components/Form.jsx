@@ -161,6 +161,8 @@ export default function Form({ setPlaylistCreated }) {
     // Evita reload do formulário.
     e.preventDefault();
     
+    await fetch('https://meow-mix.onrender.com/');
+
     if (!errorsValidation(mood, timeOfDay, goal, genres, rhythm, language, novelty, limit)) return;
 
     // Verifica o token (verifica se o usuário está logado).
