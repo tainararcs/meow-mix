@@ -1,14 +1,17 @@
-# 🎧 MeowMix
+# MeowMix
 
 > Playlists personalizadas do Spotify geradas por IA, com uma dose de fofura felina
 
 MeowMix é uma aplicação full stack que cria **playlists personalizadas no Spotify** com base no humor, contexto e preferências do usuário. 
 A geração das sugestões musicais é feita com **IA generativa (Google Gemini)**, enquanto a criação e gerenciamento das playlists utiliza a **Spotify Web API**.
 
-**🐱 [Acesse aqui](https://meow-mix.vercel.app/)**
+<div align="center">
+  <a src="(https://meow-mix.vercel.app/">
+    <img src="assets/meowmix.png" alt="meowmix">
+  </a>
+</div>
 
-
-### - Funcionalidades
+## Funcionalidades
 
 - **Personalização total**: Escolha humor, horário, finalidade, gêneros e mais
 - **IA inteligente**: Sugestões musicais geradas pelo Google Gemini
@@ -17,7 +20,11 @@ A geração das sugestões musicais é feita com **IA generativa (Google Gemini)
 - **Criação instantânea**: Playlist pronta em segundos
 
   
-### - Como funciona 
+## Como funciona 
+
+<div align="center">
+  <img src="assets/form.png" alt="meowmix">
+</div>
 
 1. Usuário preenche o formulário com preferências musicais
 3. Caso não esteja autenticado, é redirecionado para login no Spotify
@@ -30,11 +37,19 @@ A geração das sugestões musicais é feita com **IA generativa (Google Gemini)
    * Adiciona músicas
    * Define capa personalizada
 7. URL da playlist é retornada ao frontend
-
+8. Com apenas um clique o usuário acessa sua nova playlist
    
-### - Tecnologias utilizadas
+<div align="center">
+  <img src="assets/link.png" alt="meowmix">
+</div>
 
-#### Frontend
+<div align="center">
+  <img src="assets/melancholy.png" alt="meowmix">
+</div>
+   
+## Tecnologias utilizadas
+
+### Frontend
 
 * React + Vite
 * JavaScript (ES6+)
@@ -42,7 +57,7 @@ A geração das sugestões musicais é feita com **IA generativa (Google Gemini)
 * Fetch API
 * LocalStorage
 
-#### Backend
+### Backend
 
 * Python 3.10+
 * FastAPI
@@ -50,18 +65,18 @@ A geração das sugestões musicais é feita com **IA generativa (Google Gemini)
 * Pydantic para validação
 * OAuth 2.0 para autenticação
 
-#### Integrações
+### Integrações
 - **Spotify Web API** - Criação e gerenciamento de playlists
 - **Google Gemini API** - Geração inteligente de sugestões musicais
 - **Cataas API** - Imagens temáticas de gatinhos para capas
 
 
-### - Deploy
+## Deploy
 
 - **Frontend**: [Vercel](https://vercel.com)
 - **Backend**: [Render](https://render.com)
 
-### - Estrutura do projeto
+## Estrutura do projeto
 
 ```
 meow-mix/
@@ -86,7 +101,7 @@ meow-mix/
 ```
 
 
-### - Personalização da IA
+## Personalização da IA
 
 A Inteligência Artificial considera múltiplos fatores para criar a playlist perfeita:
 
@@ -107,7 +122,7 @@ A resposta da IA inclui:
 * Lista de músicas (título + artista)
 
 
-### - Capa da playlist
+## Capa da playlist
 
 A capa da playlist é definida automaticamente:
 
@@ -116,7 +131,11 @@ A capa da playlist é definida automaticamente:
 3. A imagem é enviada para o Spotify via endpoint:
 
 
-### - Caso opte por executar localmente
+<div align="center">
+  <img src="assets/lofi.png" alt="meowmix">
+</div>
+
+## Caso opte por executar localmente
 
 #### Pré-requisitos
 - Python 3.10+
